@@ -1,41 +1,57 @@
-// Card Style
-import styled from "styled-components";
-import Flex from "../../styles/Flex";
+import React, { useState, useEffect } from "react";
+import { useLocation, useParams } from "react-router-dom";
+import {
+  Description,
+  DetailContainer,
+  DetailImg,
+  DetailPart,
+  DetailTitle,
+  InfoPart,
+} from "./Detail.style";
+import defaultImg from "../../assets/book.jpg";
 
-export const CardContainer = styled(Flex)`
-  flex-direction: column;
-  height: 20rem;
-  width: 20rem;
-  padding: 0.5rem;
-  border-radius: 1rem;
-  margin: 0.7rem;
-  box-shadow: 3px 3px 10px 1px rgba(0, 0, 0, 0.3);
-  background-color: ${({ theme }) => theme.colors.navbarBgColor};
-`;
+import axios from "axios";
 
-export const CardHeader = styled.h2`
-  font-size: 1.2rem;
-  text-align: center;
-  overflow: hidden;
-  height: 5rem;
-`;
+const Detail = () => {
+  const { state } = useLocation();
+  const { id } = useParams();
+  const [detailData, setDetailData] = useState("");
 
-export const CardMedia = styled.img`
-  min-height: 10rem;
-  max-height: 10rem;
-`;
+  console.log(state);
+  const APP_KEY = process.env.REACT_APP_apiKey;
+  const url = `https://www.googleapis.com/books/v1/volumes/${id}?key=${APP_KEY}`;
 
-export const CardButton = styled.button`
-  font-weight: bold;
-  padding: 0.7rem;
-  outline: none;
-  border: none;
-  margin: 0.5rem;
-  border-radius: 3px;
-  cursor: pointer;
-  :hover {
-    opacity: 0.6;
-  }
-  background-color: ${({ theme }) => theme.colors.mainColor};
-  color: ${({ theme }) => theme.colors.linkHoverColor};
-`;
+  const getDetailData = async () => {
+    try {
+      const { data } = await axios.get(url);
+      console.log(data);
+      setDetailData(data);
+    } catch (error) {}
+  };
+  useEffect(() => {
+    getDetailData();
+  }, []);
+
+  return (
+    <DetailContainer>
+      <DetailPart>
+        <DetailTitle>{state.volumeInfo.title}</DetailTitle>
+        <DetailImg>
+          <img
+            src={state.volumeInfo?.imageLinks?.smallThumbnail || defaultImg}
+            alt=""
+          />
+        </DetailImg>
+        <Description>{state.volumeInfo.description}</Description>
+        <InfoPart>
+          <p>{state.volumeInfo.authors.join(" - ")}</p>
+          <p>
+            {state.volumeInfo.publishedDate} / {state.volumeInfo?.publisher}
+          </p>
+        </InfoPart>
+      </DetailPart>
+    </DetailContainer>
+  );
+};
+
+export default Detail;

@@ -14,16 +14,13 @@ const Navbar = () => {
   };
   return (
     <Nav justify="space-between" wrap="wrap">
-      <Logo to="/">Clarus Library</Logo>
+      <Logo to="/">Library</Logo>
       <HamburgerIcon onClick={() => setToggle(!toggle)}>
         {menuIcon}
       </HamburgerIcon>
       <Menu showMenu={toggle}>
         <MenuLink to="/" onClick={handleClose}>
           Home
-        </MenuLink>
-        <MenuLink to="/about" onClick={handleClose}>
-          About
         </MenuLink>
         {user ? (
           <MenuLink to="/login" onClick={logOut}>
@@ -33,9 +30,6 @@ const Navbar = () => {
           <>
             <MenuLink to="/login" onClick={handleClose}>
               Login
-            </MenuLink>
-            <MenuLink to="/register" onClick={handleClose}>
-              Register
             </MenuLink>
           </>
         )}

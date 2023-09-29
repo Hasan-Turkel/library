@@ -2,8 +2,8 @@
 
 export const lightTheme = {
     colors: {
-      navbarBgColor: "white",
-      mainColor: "#86C8BC",
+      navbarBgColor: "orange",
+      mainColor: "yellow",
       logoColor: "darkslategray",
       linkColor: "#8B7E74",
       detailBgColor: "#e1f1dd",
